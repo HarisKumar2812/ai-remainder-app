@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Driven Reminder & Assistant</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #ff9a9e, #fad0c4, #fad0c4, #fbc2eb);
+            text-align: center;
+            animation: backgroundAnimation 10s infinite alternate;
+        }
+        @keyframes backgroundAnimation {
+            0% { background: linear-gradient(135deg, #ff9a9e, #fad0c4); }
+            100% { background: linear-gradient(135deg, #fbc2eb, #ffdde1); }
+        }
+        .container, .login-container, .signup-container {
+            max-width: 400px;
+            margin: 100px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        .feature {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            transition: transform 0.3s ease-in-out;
+        }
+        .feature:last-child { border-bottom: none; }
+        .feature:hover { transform: scale(1.05); }
+        .feature i {
+            font-size: 32px;
+            color: #4CAF50;
+            margin-right: 15px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        input {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        .hidden { display: none; }
+        .menu-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            font-size: 24px;
+        }
+        .menu {
+            position: absolute;
+            top: 60px;
+            left: 20px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+        .menu-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+        .menu-item:hover {
+            background: #f1f1f1;
+        }
+        .logout-confirm {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+    </style>
+    <script>
+        function showSignup() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('signupPage').classList.remove('hidden');
+        }
+        function backToLogin() {
+            document.getElementById('signupPage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+        }
+        function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            if (username === "" || password === "") {
+                alert('Please enter both username and password.');
+                return;
+            }
+            if (password.length < 8) {
+                alert('Password must be at least 8 characters long.');
+                return;
+            }
+            if (/[A-Z]/.test(password)) {
+                alert('Password should not contain capital letters.');
+                return;
+            }
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        }
+        function signup() {
+            const age = document.getElementById('age').value;
+            if (age < 15) {
+                alert('Age must be above 15!');
+                return;
+            }
+            document.getElementById('signupPage').classList.add('hidden');
+            document.getElementById('homePage').classList.remove('hidden');
+        }
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+        }
+        function toggleMenu() {
+            const menu = document.getElementById('menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+        function showLogoutConfirm() {
+            document.getElementById('logoutConfirm').style.display = 'block';
+        }
+        function hideLogoutConfirm() {
+            document.getElementById('logoutConfirm').style.display = 'none';
+        }
+        function logout() {
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('loginPage').classList.remove('hidden');
+            hideLogoutConfirm();
+        }
+    </script>
+</head>
+<body>
+    <div id="loginPage" class="login-container">
+        <h1>Login</h1>
+        <input type="text" id="loginUsername" placeholder="Username">
+        <input type="password" id="loginPassword" placeholder="Password">
+        <button onclick="login()">Login</button>
+        <button onclick="showSignup()">Sign Up</button>
+    </div>
+    
+    <div id="signupPage" class="signup-container hidden">
+        <h1>Sign Up</h1>
+        <input type="text" placeholder="Name">
+        <input type="number" id="age" placeholder="Age">
+        <select>
+            <option value="child">Child</option>
+            <option value="adult">Adult</option>
+        </select>
+        <select id="countryCode">
+            <option value="+1">+1 (USA)</option>
+            <option value="+44">+44 (UK)</option>
+            <option value="+91">+91 (India)</option>
+            <!-- Add more country codes as needed -->
+        </select>
+        <input type="text" id="phoneNumber" placeholder="Phone No">
+        <input type="text" placeholder="Address">
+        <input type="text" placeholder="Create Username">
+        <input type="password" id="password" placeholder="Password">
+        <i class="fas fa-eye" onclick="togglePassword()"></i>
+        <button onclick="signup()">Confirm</button>
+        <button onclick="backToLogin()">Back to Login</button>
+    </div>
+    
+    <div id="homePage" class="container hidden">
+        <div class="menu-icon" onclick="toggleMenu()">&#9776;</div>
+        <div id="menu" class="menu">
+            <div class="menu-item" onclick="alert('Settings clicked')">Settings</div>
+            <div class="menu-item" onclick="alert('Profile clicked')">Profile</div>
+            <div class="menu-item" onclick="alert('Language clicked')">Language</div>
+            <div class="menu-item" onclick="showLogoutConfirm()">Logout</div>
+        </div>
+        <h1>AI-Driven Reminder & Assistant</h1>
+        <div class="feature"><i class="fas fa-microphone"></i> Voice & Text Input</div>
+        <div class="feature"><i class="fas fa-bell"></i> Smart Notifications</div>
+        <div class="feature"><i class="fas fa-calendar-alt"></i> Integrated Calendar & To-Do List</div>
+        <div class="feature"><i class="fas fa-heartbeat"></i> Health Reminders</div>
+        <div class="feature"><i class="fas fa-smile"></i> Motivation & Appreciation</div>
+        <div class="feature"><i class="fas fa-user-shield"></i> Personalized Assistance</div>
+        <div class="feature"><i class="fas fa-tasks"></i> Task Breakdown for Big Goals</div>
+    </div>
+    
+    <div id="logoutConfirm" class="logout-confirm hidden">
+        <p>Are you sure you want to logout?</p>
+        <button onclick="logout()">Confirm</button>
+        <button onclick="hideLogoutConfirm()">Cancel</button>
+    </div>
+</body>
+</html>
